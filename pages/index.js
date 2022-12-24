@@ -69,8 +69,6 @@ export default function Home() {
                     name,
                     givenName,
 				}),
-        withCredentials: true,  
-       crossorigin: true,
 			});
             const data= await res.json();
 			if (res.status === 400 || !data) {
