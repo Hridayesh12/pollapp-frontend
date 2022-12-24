@@ -1,0 +1,41 @@
+.heading{
+    font-size:1.5em;
+}
+.heading1{
+    font-size:1.5em;
+    color:#394F8A;
+}
+.title{
+    font-size:1em;
+}
+.heading {
+    padding: 15px 25px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #6699ff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  
+  .heading:hover {background-color: rgb(62, 111, 142)}
+  
+  .heading:active {
+    background-color: rgb(62, 111, 142);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+@media (max-width: 600px) {
+    .heading{
+        font-size: 1em;
+    }
+    .heading1{
+        font-size:1em;
+    }
+    .title{
+        font-size:0.7em;
+    }
+}

@@ -1,0 +1,16 @@
+.radioBtn::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em #439A97;
+  }
+  .radioBtn:focus {
+    outline: max(2px, 0.15em) solid #439A97;
+    outline-offset: max(2px, 0.15em);
+  }
+ .radioBtn:checked::before {
+    transform: scale(1.2);
+  }

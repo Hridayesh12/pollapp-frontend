@@ -1,0 +1,13 @@
+.nav_after{
+    background-color:#C58940;
+    padding:2px;
+    color:#EAD6CD;
+    transition:0.2s;
+}
+.nav_before{
+    background-color: #E5BA73;
+    padding:7px;
+    color:#251749;
+    transition: 0.2s;
+    box-shadow: none;
+}
