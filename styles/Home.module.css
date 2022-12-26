@@ -159,6 +159,9 @@ border-color:#ea4335 #fbbc05 #34a853 #4285f4 !important;
   .button{
     font-size: 1rem;
   }
+  .log{
+    margin-bottom:10px;
+  }
   .button span:after{
     font-size: 1rem;
   }
