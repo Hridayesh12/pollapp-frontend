@@ -82,7 +82,7 @@ const ActiveLobby = ({lobby}) => {
       const stuid = id;
       // console.log(stuid);
       const res = await fetch(`${link}close`, {
-        method: "put",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
