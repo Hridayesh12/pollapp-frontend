@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import { Box } from '@mui/material';
-import { Typography, Divider, RadioGroup,MyFormControlLabel,Radio} from "@mui/material";
+import { Typography, Divider, RadioGroup, MyFormControlLabel, Radio } from "@mui/material";
 import styles from '../../../styles/Radio.module.css';
 import {
   createTheme,
@@ -68,7 +68,8 @@ const VotePage = ({ usern, lobbyid }) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ data: lobbyuuid })
+      body: JSON.stringify({ data: lobbyuuid }),
+      credentials: "include",
     }).then((res) => res.json())
       .then((ret) => {
         setItems(ret.myitem);
@@ -172,6 +173,7 @@ const VotePage = ({ usern, lobbyid }) => {
         data: lobbyid,
         subject
       }),
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
@@ -194,7 +196,8 @@ const VotePage = ({ usern, lobbyid }) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ data: lobbyuuid })
+      body: JSON.stringify({ data: lobbyuuid }),
+      credentials: "include",
     }).then((res) => res.json())
       .then((rat) => {
         if (!rat.myitem[0].close) {
@@ -216,22 +219,22 @@ const VotePage = ({ usern, lobbyid }) => {
         </div>
       )}
       {check == false && (
-        <Box sx={{width:{xs:'100%',sm:'70%',md:'60%'},minHeight:'100vh',margin:'auto',backgroundColor:'#CBEDD5',padding:{xs:1,sm:3}}}>
-            <Box sx={{display:"flex",mb:2 }}>
-        <Image  src={pollapp} width={20} height={20} />
-          </Box> 
-            <div style={{color:'#C58940',borderBottom:'5px solid #439A97',marginBottom:'7px'}}>
-              <ThemeProvider theme={theme}>
+        <Box sx={{ width: { xs: '100%', sm: '70%', md: '60%' }, minHeight: '100vh', margin: 'auto', backgroundColor: '#CBEDD5', padding: { xs: 1, sm: 3 } }}>
+          <Box sx={{ display: "flex", mb: 2 }}>
+            <Image src={pollapp} width={20} height={20} />
+          </Box>
+          <div style={{ color: '#C58940', borderBottom: '5px solid #439A97', marginBottom: '7px' }}>
+            <ThemeProvider theme={theme}>
               <Typography variant='h2'> {lobbydes.lobbyName}</Typography>
               <Typography variant='h3'>{lobbydes.lobbyDescription}</Typography>
-              </ThemeProvider>
-            </div>
+            </ThemeProvider>
+          </div>
           <div>
             {polldes.map((poll, x) => (
               <div key={poll}>
                 <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <ThemeProvider theme={theme}>
-                    <Typography variant="h3" sx={{color:'##439A97'}}>
+                    <Typography variant="h3" sx={{ color: '##439A97' }}>
                       Q{x + 1}.
                     </Typography>
                   </ThemeProvider>
@@ -240,7 +243,7 @@ const VotePage = ({ usern, lobbyid }) => {
 
                 <ThemeProvider theme={theme}>
                   <div style={{ position: "relative", height: "50px", width: "100%", overflow: "auto", marginBottom: "7px", borderBottom: "3px solid #C58940" }}>
-                    <Typography variant="h3" sx={{color:'#439A97'}}>
+                    <Typography variant="h3" sx={{ color: '#439A97' }}>
                       {poll.pollQuestion}
                     </Typography>
                   </div>
@@ -254,22 +257,24 @@ const VotePage = ({ usern, lobbyid }) => {
                               color: "#CBEDD5",
                               width: "100%",
                               position: "relative",
-                              backgroundColor:'#E5BA73',
-                              borderRadius:'50px',
+                              backgroundColor: '#E5BA73',
+                              borderRadius: '50px',
                               display: 'flex',
                               flexDirection: 'row-reverse'
                             }}
-                            sx={{height: {xs:'40px',sm:'50px'}}}
+                            sx={{ height: { xs: '40px', sm: '50px' } }}
                           >
-                           <input
-                           className={styles.radioBtn}
-                           style={{width:'1rem',height:'1rem',borderRadius:'0.15em solid #439A97',appearance: 'none',
-                           backgroundColor:'#CBEDD5',marginTop:'0.8rem',marginRight:'1rem',display:"grid",placeContent:"center",borderRadius:"50%"}}
-                           type="radio" value={oop.optionValue} name={poll.pollQuestion} id="gywshb"
-                           onChange={()=>nowdigonthis(poll._id,oop._id,poll.pollQuestion,oop.optionValue)}
-                           sx={{mr:{xs:0,sm:'5%'}}} 
-                           />
-                            <Typography variant="h5" title={oop.optionValue} sx={{overflow:"auto",borderRadius:'50px 0px 0px 50px',paddingLeft:'3%',paddingTop:'1%',backgroundColor:'#C58940', position: 'absolute', left: 0, width: '85%', height: {xs:'40px',sm:'50px'} }}>
+                            <input
+                              className={styles.radioBtn}
+                              style={{
+                                width: '1rem', height: '1rem', borderRadius: '0.15em solid #439A97', appearance: 'none',
+                                backgroundColor: '#CBEDD5', marginTop: '0.8rem', marginRight: '1rem', display: "grid", placeContent: "center", borderRadius: "50%"
+                              }}
+                              type="radio" value={oop.optionValue} name={poll.pollQuestion} id="gywshb"
+                              onChange={() => nowdigonthis(poll._id, oop._id, poll.pollQuestion, oop.optionValue)}
+                              sx={{ mr: { xs: 0, sm: '5%' } }}
+                            />
+                            <Typography variant="h5" title={oop.optionValue} sx={{ overflow: "auto", borderRadius: '50px 0px 0px 50px', paddingLeft: '3%', paddingTop: '1%', backgroundColor: '#C58940', position: 'absolute', left: 0, width: '85%', height: { xs: '40px', sm: '50px' } }}>
                               {y + 1}. {oop.optionValue}
                             </Typography>
                           </Box>
@@ -279,10 +284,10 @@ const VotePage = ({ usern, lobbyid }) => {
                     ))}
                   </div>
                 </ThemeProvider>
-                <Divider sx={{ marginLeft: "auto"}}></Divider><br />
+                <Divider sx={{ marginLeft: "auto" }}></Divider><br />
               </div>
             ))}
-        </div>
+          </div>
         </Box>
       )}
     </div>

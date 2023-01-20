@@ -52,7 +52,7 @@ const DashDrawer = () => {
         credentials: "include",
       });
       const data = await res.json();
-  
+
       if (res.status === 200 || res.status === 201) {
         setUserInfo(data);
         if (data.Subject) {
@@ -70,154 +70,156 @@ const DashDrawer = () => {
           setTimedPopup(true);
         }, 1000);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
   var usern = userInfo;
   var userIds = usern._id;
   React.useEffect(() => {
     userd();
   }, []);
-  
+
   let SubVal = [];
   const [opened, setOpened] = React.useState(false);
-const handleClickOpen = () => {
-  setOpened(true);
-  if (
-    subjectArray.length != 0 ||
-    subjectArray.length != undefined ||
-    subjectArray.length != null
-  ) {
-    for (let i = 0; i < subjectArray.length; i++) {
-      SubVal.push(subjectArray[i].SubjectValue);
+  const handleClickOpen = () => {
+    setOpened(true);
+    if (
+      subjectArray.length != 0 ||
+      subjectArray.length != undefined ||
+      subjectArray.length != null
+    ) {
+      for (let i = 0; i < subjectArray.length; i++) {
+        SubVal.push(subjectArray[i].SubjectValue);
+      }
+      // console.log(SubVal);
     }
-    // console.log(SubVal);
-  }
-};
-const [selectedSubject, setselectedSubject] = React.useState(1000);
-const handleSubjectChange = (event) => {
-  setselectedSubject(event.target.value);
-};
+  };
+  const [selectedSubject, setselectedSubject] = React.useState(1000);
+  const handleSubjectChange = (event) => {
+    setselectedSubject(event.target.value);
+  };
 
-const handleClosed = () => {
-  setOpened(false);
-};
+  const handleClosed = () => {
+    setOpened(false);
+  };
 
-const [Lobby, setLobby] = useState({
-  lobbyId: "",
-  lobbyName: "",
-  lobbyDescription: "",
-  studentformId: [],
-  pollId: [],
-  userId: "",
-});
-let name, value;
-const handleInputs = (e) => {
-  name = e.target.name;
-  value = e.target.value;
-  setLobby({ ...Lobby, [name]: value });
-};
+  const [Lobby, setLobby] = useState({
+    lobbyId: "",
+    lobbyName: "",
+    lobbyDescription: "",
+    studentformId: [],
+    pollId: [],
+    userId: "",
+  });
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setLobby({ ...Lobby, [name]: value });
+  };
 
-const Lob = async (e) => {
-  var lobs = { ...Lobby };
-  lobs.userId = userIds;
-  setLobby(lobs);
-  Lobby.userId = userIds;
-  const d = new Date();
-  let timex = d.toLocaleString();
-  var xemit = "";
-  for (var a = 0; a < timex.length; a++) {
-    if (timex[a] == ":" || timex[a] == "," || timex[a] == "/") {
-      if (timex[a] == ",") {
-        xemit = xemit + "t";
+  const Lob = async (e) => {
+    var lobs = { ...Lobby };
+    lobs.userId = userIds;
+    setLobby(lobs);
+    Lobby.userId = userIds;
+    const d = new Date();
+    let timex = d.toLocaleString();
+    var xemit = "";
+    for (var a = 0; a < timex.length; a++) {
+      if (timex[a] == ":" || timex[a] == "," || timex[a] == "/") {
+        if (timex[a] == ",") {
+          xemit = xemit + "t";
+        } else {
+          xemit = xemit + "-";
+        }
       } else {
-        xemit = xemit + "-";
+        if (
+          timex[a] == " " ||
+          timex[a] == "P" ||
+          timex[a] == "A" ||
+          timex[a] == "M"
+        ) {
+          xemit = xemit + "";
+        } else {
+          xemit = xemit + timex[a];
+        }
+      }
+    }
+    if (Lobby.lobbyName == "" || Lobby.lobbyDescription == "") {
+      swal("Warning", "Please Fill All The Details", "warning");
+    } else if (selectedSubject != 1000) {
+      let subject = selectedSubject;
+      let subs = subject.trim();
+      var finalid = xemit + "s" + subs;
+      Lobby.lobbyId = finalid;
+      const {
+        lobbyId,
+        lobbyName,
+        lobbyDescription,
+        studentformId,
+        pollId,
+        userId,
+      } = Lobby;
+      const res = await fetch(`${link}createnewlobby`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          lobbyId,
+          lobbyName,
+          lobbyDescription,
+          studentformId,
+          pollId,
+          userId,
+          subject,
+        }),
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (res.status === 400 || !data) {
+        swal("Error", "Lobby Not Created", "error");
+      } else if (res.status === 200 || res.status === 201) {
+        swal("Success", "Lobby Created", "success");
+        router.push('/createpoll/' + Lobby.lobbyId);
       }
     } else {
-      if (
-        timex[a] == " " ||
-        timex[a] == "P" ||
-        timex[a] == "A" ||
-        timex[a] == "M"
-      ) {
-        xemit = xemit + "";
-      } else {
-        xemit = xemit + timex[a];
+      var finalid = xemit;
+      Lobby.lobbyId = finalid;
+      const {
+        lobbyId,
+        lobbyName,
+        lobbyDescription,
+        studentformId,
+        pollId,
+        userId,
+      } = Lobby;
+      const res = await fetch(`${link}createnewlobby`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          lobbyId,
+          lobbyName,
+          lobbyDescription,
+          studentformId,
+          pollId,
+          userId,
+        }),
+        credentials: "include",
+      });
+      const dat = await res.json();
+      if (res.status === 400 || !dat) {
+        swal("Error", "Lobby Not Created", "error");
+      } else if (res.status === 200 || res.status === 201) {
+        swal("Success", "Lobby Created", "success");
+        router.push('/createpoll/' + Lobby.lobbyId);
       }
     }
-  }
-  if (Lobby.lobbyName == "" || Lobby.lobbyDescription == "") {
-    swal("Warning", "Please Fill All The Details", "warning");
-  } else if (selectedSubject != 1000) {
-    let subject = selectedSubject;
-    let subs = subject.trim();
-    var finalid = xemit + "s" + subs;
-    Lobby.lobbyId = finalid;
-    const {
-      lobbyId,
-      lobbyName,
-      lobbyDescription,
-      studentformId,
-      pollId,
-      userId,
-    } = Lobby;
-    const res = await fetch(`${link}createnewlobby`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        lobbyId,
-        lobbyName,
-        lobbyDescription,
-        studentformId,
-        pollId,
-        userId,
-        subject,
-      }),
-    });
-    const data = await res.json();
-    if (res.status === 400 || !data) {
-      swal("Error", "Lobby Not Created", "error");
-    } else if (res.status === 200 || res.status === 201) {
-      swal("Success", "Lobby Created", "success");
-      router.push('/createpoll/'+Lobby.lobbyId);
-    }
-  } else {
-    var finalid = xemit;
-    Lobby.lobbyId = finalid;
-    const {
-      lobbyId,
-      lobbyName,
-      lobbyDescription,
-      studentformId,
-      pollId,
-      userId,
-    } = Lobby;
-    const res = await fetch(`${link}createnewlobby`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        lobbyId,
-        lobbyName,
-        lobbyDescription,
-        studentformId,
-        pollId,
-        userId,
-      }),
-    });
-    const dat = await res.json();
-    if (res.status === 400 || !dat) {
-      swal("Error", "Lobby Not Created", "error");
-    } else if (res.status === 200 || res.status === 201) {
-      swal("Success", "Lobby Created", "success");
-      router.push('/createpoll/'+Lobby.lobbyId);
-    }
-  }
-};
+  };
   return (
-    <Box sx={{display: { xs: "flex", md: "none" } }}>
+    <Box sx={{ display: { xs: "flex", md: "none" } }}>
       <Tooltip title="Account settings">
         <IconButton
           onClick={handleClick}
@@ -227,7 +229,7 @@ const Lob = async (e) => {
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          {open ? <CloseOutlinedIcon/>: <MenuIcon/> }
+          {open ? <CloseOutlinedIcon /> : <MenuIcon />}
         </IconButton>
       </Tooltip>
       <Menu
@@ -264,11 +266,11 @@ const Lob = async (e) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "top" }}
       >
-        <MenuItem  onClick={handleClickOpen}>
+        <MenuItem onClick={handleClickOpen}>
           <AddOutlinedIcon />
           Create Lobby
         </MenuItem>
-        <MenuItem  onClick={() => {
+        <MenuItem onClick={() => {
           router.push("/auth/profile");
         }}>
           <AddOutlinedIcon />
@@ -276,66 +278,49 @@ const Lob = async (e) => {
         </MenuItem>
       </Menu>
       <Dialog
-          open={opened}
-          onClose={handleClose}
-          style={{ width: { xs: "100vw" } }}
-          fullWidth
+        open={opened}
+        onClose={handleClose}
+        style={{ width: { xs: "100vw" } }}
+        fullWidth
+      >
+        <DialogTitle
+          style={{
+            display: "flex",
+            flexWrap: "no-wrap",
+            backgroundColor: "#DAECFF",
+          }}
         >
-          <DialogTitle
-            style={{
-              display: "flex",
-              flexWrap: "no-wrap",
-              backgroundColor: "#DAECFF",
-            }}
-          >
-            Create New&nbsp;<span style={{ color: "#003399" }}>LOBBY</span>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <TextField
-                name="lobbyName"
-                value={Lobby.lobbyName}
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Lobby Title"
-                variant="standard"
-                onChange={handleInputs}
-                inputProps={{ maxLength: 40 }}
-              />
-              <TextField
-                name="lobbyDescription"
-                value={Lobby.lobbyDescription}
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Lobby Description"
-                fullWidth
-                variant="standard"
-                multiline
-                rows={2}
-                onChange={handleInputs}
-                inputProps={{ maxLength: 100 }}
-              />
-              {userInfo.Subject == undefined ? (
-                <>
-                  <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="demo-simple-select-filled-label">
-                      Subject
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-filled-label"
-                      id="demo-simple-select-filled"
-                      value="None"
-                    >
-                      <MenuItem value={1000}>None</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <marquee>
-                    <em>You can create a subject in profile section</em>
-                  </marquee>
-                </>
-              ) : (
+          Create New&nbsp;<span style={{ color: "#003399" }}>LOBBY</span>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <TextField
+              name="lobbyName"
+              value={Lobby.lobbyName}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Lobby Title"
+              variant="standard"
+              onChange={handleInputs}
+              inputProps={{ maxLength: 40 }}
+            />
+            <TextField
+              name="lobbyDescription"
+              value={Lobby.lobbyDescription}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Lobby Description"
+              fullWidth
+              variant="standard"
+              multiline
+              rows={2}
+              onChange={handleInputs}
+              inputProps={{ maxLength: 100 }}
+            />
+            {userInfo.Subject == undefined ? (
+              <>
                 <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
                   <InputLabel id="demo-simple-select-filled-label">
                     Subject
@@ -343,39 +328,56 @@ const Lob = async (e) => {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    value={selectedSubject}
-                    onChange={handleSubjectChange}
+                    value="None"
                   >
                     <MenuItem value={1000}>None</MenuItem>
-                    {userInfo.Subject.map((value, index) => (
-                      <MenuItem value={value.SubjectValue}>
-                        {value.SubjectValue}
-                      </MenuItem>
-                    ))}
                   </Select>
                 </FormControl>
-              )}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions style={{ backgroundColor: "#FFFAFA" }}>
-            <Button
-              variant="contained"
-              color="error"
-              endIcon={<CloseOutlinedIcon />}
-              onClick={handleClosed}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="success"
-              endIcon={<AddOutlinedIcon />}
-              onClick={Lob}
-            >
-              Create
-            </Button>
-          </DialogActions>
-        </Dialog>
+                <marquee>
+                  <em>You can create a subject in profile section</em>
+                </marquee>
+              </>
+            ) : (
+              <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-filled-label">
+                  Subject
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-filled-label"
+                  id="demo-simple-select-filled"
+                  value={selectedSubject}
+                  onChange={handleSubjectChange}
+                >
+                  <MenuItem value={1000}>None</MenuItem>
+                  {userInfo.Subject.map((value, index) => (
+                    <MenuItem value={value.SubjectValue}>
+                      {value.SubjectValue}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{ backgroundColor: "#FFFAFA" }}>
+          <Button
+            variant="contained"
+            color="error"
+            endIcon={<CloseOutlinedIcon />}
+            onClick={handleClosed}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            endIcon={<AddOutlinedIcon />}
+            onClick={Lob}
+          >
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }

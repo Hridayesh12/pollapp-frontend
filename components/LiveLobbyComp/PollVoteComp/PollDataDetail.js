@@ -1,10 +1,10 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography, Divider, Button,Box,IconButton,Fade} from "@mui/material";
+import { Typography, Divider, Button, Box, IconButton, Fade } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-const PollDataDetail = ({pollDet,sr}) => {
-    const [checked, setChecked] = React.useState(false);
+const PollDataDetail = ({ pollDet, sr }) => {
+  const [checked, setChecked] = React.useState(false);
   const containerRef = React.useRef(null);
   const link = process.env.NEXT_PUBLIC_URL;
   const handleChange = () => {
@@ -42,84 +42,86 @@ const PollDataDetail = ({pollDet,sr}) => {
     },
   };
   const [data, setdata] = useState([]);
-  const usinnname= async()=>{
-    await  fetch(`${link}mailName`,{method:"POST",
-    headers: {
+  const usinnname = async () => {
+    await fetch(`${link}mailName`, {
+      method: "POST",
+      headers: {
         "Content-type": "application/json",
-    },
-    body: JSON.stringify({data:pollDet.pollOption})
-}).then((res)=>res.json())
-    .then((rte)=>{
-      if(data!=rte.Data){
-        // console.log(rte.Data.length);
-        // console.log("rte",rte.Data);
-        setdata(rte.Data);
-      }
-    })
+      },
+      body: JSON.stringify({ data: pollDet.pollOption }),
+      credentials: "include",
+    }).then((res) => res.json())
+      .then((rte) => {
+        if (data != rte.Data) {
+          // console.log(rte.Data.length);
+          // console.log("rte",rte.Data);
+          setdata(rte.Data);
+        }
+      })
   }
   useEffect(() => {
-      usinnname();
+    usinnname();
     // console.log("Data",data);
   }, [pollDet])
   return (
     <div >
-      <div style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}>
-      <Button onClick={handleChange} sx={{color:'#439A97'}}>View Details</Button>
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Button onClick={handleChange} sx={{ color: '#439A97' }}>View Details</Button>
       </div>
-      <Fade  in={checked}>
-      <Paper sx={{ backgroundColor:'#CBEDD5',color:'#439A97',width: '100%', height: '100%',position:'absolute',top:'0',overflow:'auto',zIndex:'2'}} elevation={0}>
-      <div
-        style={{
-          position: "relative",
-          width: "95%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection:"column"
-        }}
-      >
-      <div
-      style={{
-        position: "relative",
-        width: "97%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        
-      }}
-    >
-      <ThemeProvider theme={theme}>
-        <Typography variant="h3">Q{sr + 1}.</Typography>
-      </ThemeProvider>
-      <IconButton onClick={handleChange}><KeyboardArrowDownIcon sx={{color:'#C58940 !important'}}/></IconButton>
-    </div>
-    <br />
+      <Fade in={checked}>
+        <Paper sx={{ backgroundColor: '#CBEDD5', color: '#439A97', width: '100%', height: '100%', position: 'absolute', top: '0', overflow: 'auto', zIndex: '2' }} elevation={0}>
+          <div
+            style={{
+              position: "relative",
+              width: "95%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "column"
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                width: "97%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
 
-    <ThemeProvider theme={theme}>
-    <div
-        style={{
-          position: "relative",
-          height: "50px",
-          width: "97%",
-          overflow: "auto",
-          marginBottom: "10px",
-          borderBottom: "4px solid #C58940",
-        }}
-      >
-        <Typography variant="h3">{pollDet.pollQuestion}</Typography>
-      </div>
-      
-       {data.map((ops,s)=>(<div style={{width:'100%',display:'flex',flexDirection:'column',marginLeft:'3%'}}>
-                <Typography variant="h5" sx={{color:'#251749'}}>{s+1}. {ops.value}</Typography>
-                {ops.voters.map((zpx,d)=>( <div style={{marginLeft:'2%',maxHeight:'50px',overflow:'auto',color:'#251749'}}>
-                <Typography variant="h6">{zpx}</Typography>
+              }}
+            >
+              <ThemeProvider theme={theme}>
+                <Typography variant="h3">Q{sr + 1}.</Typography>
+              </ThemeProvider>
+              <IconButton onClick={handleChange}><KeyboardArrowDownIcon sx={{ color: '#C58940 !important' }} /></IconButton>
+            </div>
+            <br />
+
+            <ThemeProvider theme={theme}>
+              <div
+                style={{
+                  position: "relative",
+                  height: "50px",
+                  width: "97%",
+                  overflow: "auto",
+                  marginBottom: "10px",
+                  borderBottom: "4px solid #C58940",
+                }}
+              >
+                <Typography variant="h3">{pollDet.pollQuestion}</Typography>
+              </div>
+
+              {data.map((ops, s) => (<div style={{ width: '100%', display: 'flex', flexDirection: 'column', marginLeft: '3%' }}>
+                <Typography variant="h5" sx={{ color: '#251749' }}>{s + 1}. {ops.value}</Typography>
+                {ops.voters.map((zpx, d) => (<div style={{ marginLeft: '2%', maxHeight: '50px', overflow: 'auto', color: '#251749' }}>
+                  <Typography variant="h6">{zpx}</Typography>
                 </div>))}
               </div>))}
-        {data.length==0?<Typography variant="h6">Candidates havn't voted yet</Typography>:<></>}
-          </ThemeProvider>
+              {data.length == 0 ? <Typography variant="h6">Candidates havn't voted yet</Typography> : <></>}
+            </ThemeProvider>
           </div>
-      </Paper>
-      </Fade> 
+        </Paper>
+      </Fade>
     </div>
   );
 }
