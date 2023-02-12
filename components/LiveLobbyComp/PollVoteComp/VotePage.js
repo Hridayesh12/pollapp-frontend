@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
 import { Box } from '@mui/material';
 import { Typography, Divider, RadioGroup, MyFormControlLabel, Radio } from "@mui/material";
 import styles from '../../../styles/Radio.module.css';
@@ -10,7 +9,6 @@ import {
 import pollapp from '../../../assets/logo.png';
 import Image from 'next/image';
 import { AppBar, Toolbar, Button } from '@mui/material';
-let socket;
 const VotePage = ({ usern, lobbyid }) => {
   let subject = '';
   let subexist = '';
@@ -122,7 +120,6 @@ const VotePage = ({ usern, lobbyid }) => {
   useEffect(() => {
     let data = usern;
     lobbyuuid = lobbyid;
-    socket = io(ENDPOINT);
     if (usern != null || usern != undefined) {
       subexist = lobbyid.includes('s');
       if (subexist) {
