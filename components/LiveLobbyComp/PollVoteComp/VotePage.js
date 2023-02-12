@@ -146,16 +146,16 @@ const VotePage = ({ usern, lobbyid }) => {
   const selectthis = (puid, opuid) => {
     if (usern) { mer = usern.mail; }
 
-    // console.log(mer, puid, opuid, lobbyid, subject);
+    console.log(mer, puid, opuid, lobbyid, subject);
     subexist = lobbyid.includes('s');
-    // console.log(subexist);
+    console.log(subexist);
     if (subexist) {
       subject = lobbyid.slice(19);
-      // console.log(subject);
+      console.log(subject);
     }
     else {
       subject = 'general';
-      // console.log(subject);
+      console.log(subject);
     }
     // console.log(subject);
     fetch(`${link}select`, {
@@ -172,12 +172,13 @@ const VotePage = ({ usern, lobbyid }) => {
       }),
       credentials: "include",
     })
-      .then((res) => res.json())
+      .then((res) => console.log(res.json()))
       .then((data) => {
+        console.log(res);
         if (data.error) {
-          // console.log({ html: data.error });
+          console.log({ html: data.error });
         } else {
-          // console.log({
+          console.log(data);
         }
       })
       .catch((err) => {
@@ -187,7 +188,7 @@ const VotePage = ({ usern, lobbyid }) => {
   const [selectedValue, setSelectedValue] = React.useState();
   const nowdigonthis = (puid, opuid, question, option) => {
     setSelectedValue(option);
-    // console.log(puid, opuid, question, option);
+    console.log(puid, opuid, question, option);
     fetch(`${link}check`, {
       method: "POST",
       headers: {
@@ -198,7 +199,7 @@ const VotePage = ({ usern, lobbyid }) => {
     }).then((res) => res.json())
       .then((rat) => {
         if (!rat.myitem[0].close) {
-          // console.log("Hello", puid, opuid, question, option);
+          console.log("Hello", puid, opuid, question, option);
           selectthis(puid, opuid);
           // socker(question,option);
         }

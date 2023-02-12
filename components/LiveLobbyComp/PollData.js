@@ -1,11 +1,11 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography, Divider} from "@mui/material";
+import { Typography, Divider } from "@mui/material";
 import PollDataDetail from "./PollVoteComp/PollDataDetail";
-import { Grid,Card} from '@mui/material';
+import { Grid, Card } from '@mui/material';
 const PollData = ({ poll, sr, sums }) => {
   const [sum, setSum] = React.useState([]);
-
+  console.log(poll, sr, sums);
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
@@ -34,18 +34,18 @@ const PollData = ({ poll, sr, sums }) => {
 
   return (
     <Card
-    raised
-    sx={{
-      width: {xs:'90vw',sm:'90vw',md:'47vw',lg:'47vw'},
-      borderRadius: '10px',
-      padding: '1rem',
-      position:'relative',
-      marginTop:"35px",
-      marginLeft:'15px',
-      backgroundColor:'#CBEDD5',
-      color:'#439A97',
-    }}
-  >
+      raised
+      sx={{
+        width: { xs: '90vw', sm: '90vw', md: '47vw', lg: '47vw' },
+        borderRadius: '10px',
+        padding: '1rem',
+        position: 'relative',
+        marginTop: "35px",
+        marginLeft: '15px',
+        backgroundColor: '#CBEDD5',
+        color: '#439A97',
+      }}
+    >
       <div
         style={{
           position: "relative",
@@ -53,7 +53,7 @@ const PollData = ({ poll, sr, sums }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          
+
         }}
       >
         <ThemeProvider theme={theme}>
@@ -93,7 +93,7 @@ const PollData = ({ poll, sr, sums }) => {
                           position: "relative",
                           border: "3px solid #251749",
                           width: "97%",
-                          padding:'0px 5px'
+                          padding: '0px 5px'
                         }}
                       >
                         <div
@@ -110,36 +110,36 @@ const PollData = ({ poll, sr, sums }) => {
                         <div>
                           <Typography variant="h5" align="right">
                             {oop.optionArray.length}&nbsp;
-                            {oop.optionArray.length==1?<>vote</>:<>votes</>}
+                            {oop.optionArray.length == 1 ? <>vote</> : <>votes</>}
                           </Typography>
                         </div>
-                          <div
-                            style={{
-                              width: `calc(${oop.optionArray.length}*100%/${sums})`,
-                              left: "1%",
-                              position: "absolute",
-                              zIndex:"1",
-                              minWidth: "2%",
-                              maxWidth: "98%",
-                              borderRadius: "15px",
-                              transition: "500ms ease-in-out",
-                              height: "10px",
-                              top: "30px",
-                              backgroundColor: "#251749",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              width: "98%",
-                              left: "1%",
-                              position: "absolute",
-                              borderRadius: "15px",
-                              transition: "500ms ease-in-out",
-                              height: "10px",
-                              top: "30px",
-                              backgroundColor: "#ccc",
-                            }}
-                          ></div>
+                        <div
+                          style={{
+                            width: `calc(${oop.optionArray.length}*100%/${sums})`,
+                            left: "1%",
+                            position: "absolute",
+                            zIndex: "1",
+                            minWidth: "2%",
+                            maxWidth: "98%",
+                            borderRadius: "15px",
+                            transition: "500ms ease-in-out",
+                            height: "10px",
+                            top: "30px",
+                            backgroundColor: "#251749",
+                          }}
+                        ></div>
+                        <div
+                          style={{
+                            width: "98%",
+                            left: "1%",
+                            position: "absolute",
+                            borderRadius: "15px",
+                            transition: "500ms ease-in-out",
+                            height: "10px",
+                            top: "30px",
+                            backgroundColor: "#ccc",
+                          }}
+                        ></div>
                       </div>
                     </>
                   )}
@@ -155,7 +155,7 @@ const PollData = ({ poll, sr, sums }) => {
                           position: "relative",
                           border: "3px solid green",
                           width: "97%",
-                          padding:'0px 5px'
+                          padding: '0px 5px'
                         }}
                       >
                         <div
@@ -171,37 +171,37 @@ const PollData = ({ poll, sr, sums }) => {
                         </div>
                         <div>
                           <Typography variant="h5" align="right">
-                          {oop.optionArray.length}&nbsp;
-                            {oop.optionArray.length==1?<>vote</>:<>votes</>}
+                            {oop.optionArray.length}&nbsp;
+                            {oop.optionArray.length == 1 ? <>vote</> : <>votes</>}
                           </Typography>
                         </div>
-                          <div
-                            style={{
-                              width: `calc(${oop.optionArray.length}*100%/${sums})`,
-                              left: "1%",
-                              position: "absolute",
-                              zIndex:"1",
-                              maxWidth: "98%",
-                              borderRadius: "15px",
-                              minWidth: "2%",
-                              transition: "500ms ease-in-out",
-                              height: "10px",
-                              top: "30px",
-                              backgroundColor: "green",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              width: "98%",
-                              left: "1%",
-                              position: "absolute",
-                              borderRadius: "15px",
-                              transition: "500ms ease-in-out",
-                              height: "10px",
-                              top: "30px",
-                              backgroundColor: "#ccc",
-                            }}
-                          ></div>
+                        <div
+                          style={{
+                            width: `calc(${oop.optionArray.length}*100%/${sums})`,
+                            left: "1%",
+                            position: "absolute",
+                            zIndex: "1",
+                            maxWidth: "98%",
+                            borderRadius: "15px",
+                            minWidth: "2%",
+                            transition: "500ms ease-in-out",
+                            height: "10px",
+                            top: "30px",
+                            backgroundColor: "green",
+                          }}
+                        ></div>
+                        <div
+                          style={{
+                            width: "98%",
+                            left: "1%",
+                            position: "absolute",
+                            borderRadius: "15px",
+                            transition: "500ms ease-in-out",
+                            height: "10px",
+                            top: "30px",
+                            backgroundColor: "#ccc",
+                          }}
+                        ></div>
                       </div>
                     </>
                   )}
@@ -214,7 +214,7 @@ const PollData = ({ poll, sr, sums }) => {
       </ThemeProvider>
       <Divider
       ></Divider>
-     <PollDataDetail pollDet={poll} sr={sr}/>
+      <PollDataDetail pollDet={poll} sr={sr} />
     </Card>
   );
 };
