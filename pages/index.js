@@ -72,17 +72,17 @@ export default function Home() {
       });
       const data = await res.json();
       if (res.status === 400 || !data) {
-        window.alert('Something went wrong')
+        swal("Error", "Something went wrong", "error");
       } else if (res.status === 200 || res.status === 201) {
-        window.alert('Logged In Successful');
+        swal("Success", "Login successfull ", "success");
         setOpen(false);
         userd();
       }
       else if (res.status === 422) {
-        window.alert('Signup First')
+        swal("Error", "User does not exsist", "error");
       }
       else {
-        window.alert('Invalid USER')
+        swal("Error", "User does not exsist", "error");
       }
     }
   };
@@ -114,10 +114,10 @@ export default function Home() {
       if (res.status === 400 || !data) {
         window.alert('Something went wrong')
       } else if (res.status === 200 || res.status === 201) {
-        window.alert('Signed Up Successfull Login To Continue')
+        swal("Success", "Sign up successfull,Login to continue", "success");
       }
       else if (res.status === 422) {
-        window.alert('User Already Exist')
+        swal("Warning", "User already exsists", "warning");
       }
       else {
       }

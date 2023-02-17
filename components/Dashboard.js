@@ -175,15 +175,28 @@ const Dashboard = () => {
             "Content-type": "application/json",
           },
           body: JSON.stringify({ finalizedArray, subject: selectedSubject, studata: rata })
-        });
+        }).then((response) =>  {
+          const blob=response.data
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Poll.xlsx`;
+          a.click();
+          });
         const data = await res.json();
         // console.log(link + "downloadzip/" + finalizedArray.length + "/" + selectedSubject);
         if (res.status === 200 || res.status === 201) {
           fetch(`${link}downloadzip/` + finalizedArray.length + "/" + selectedSubject, {
             method: "GET",
             headers: {},
-          })
-          window.open(`${link}downloadzip/` + finalizedArray.length + "/" + selectedSubject);
+          }).then((response) =>  {
+            const blob=response.data
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Closedpolls.zip`;
+            a.click();
+            });
         }
       }
       finalizedArray.splice(0, finalizedArray.length);
