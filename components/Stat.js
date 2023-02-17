@@ -71,12 +71,13 @@ const Stat = ({id}) => {
       const data= await res.json();
       if (res.status===200||res.status===201)
       {
-          
-          fetch("/download/"+lobbyuuid+"/"+lobbydes.lobbyName,{
+          try
+          {
+            fetch(`${link}download/`+lobbyuuid+"/"+lobbydes.lobbyName,{
               method:"GET",
               headers: {},            
           })
-          window.open('/download/'+lobbyuuid+"/"+lobbydes.lobbyName);
+          window.open(`${link}download/`+lobbyuuid+"/"+lobbydes.lobbyName);
           Swal.fire({
             position: 'top-middle',
             icon: 'success',
@@ -84,6 +85,18 @@ const Stat = ({id}) => {
             showConfirmButton: false,
             timer: 1500
           })
+          }
+          catch(err)
+          {
+          console.log(err);
+            Swal.fire({
+              position: 'top-middle',
+              icon: 'error',
+              title: 'Try Again Later',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
       }
       else{
         Swal.fire({
