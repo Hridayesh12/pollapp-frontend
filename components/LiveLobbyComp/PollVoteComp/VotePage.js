@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
 import { Box } from '@mui/material';
 import { Typography, Divider, RadioGroup, MyFormControlLabel, Radio } from "@mui/material";
 import styles from '../../../styles/Radio.module.css';
@@ -10,7 +9,6 @@ import {
 import pollapp from '../../../assets/logo.png';
 import Image from 'next/image';
 import { AppBar, Toolbar, Button } from '@mui/material';
-let socket;
 const VotePage = ({ usern, lobbyid }) => {
   let subject = '';
   let subexist = '';
@@ -122,7 +120,6 @@ const VotePage = ({ usern, lobbyid }) => {
   useEffect(() => {
     let data = usern;
     lobbyuuid = lobbyid;
-    socket = io(ENDPOINT);
     if (usern != null || usern != undefined) {
       subexist = lobbyid.includes('s');
       if (subexist) {
@@ -149,16 +146,16 @@ const VotePage = ({ usern, lobbyid }) => {
   const selectthis = (puid, opuid) => {
     if (usern) { mer = usern.mail; }
 
-    // console.log(mer, puid, opuid, lobbyid, subject);
+    console.log(mer, puid, opuid, lobbyid, subject);
     subexist = lobbyid.includes('s');
-    // console.log(subexist);
+    console.log(subexist);
     if (subexist) {
       subject = lobbyid.slice(19);
-      // console.log(subject);
+      console.log(subject);
     }
     else {
       subject = 'general';
-      // console.log(subject);
+      console.log(subject);
     }
     // console.log(subject);
     fetch(`${link}select`, {
@@ -175,12 +172,13 @@ const VotePage = ({ usern, lobbyid }) => {
       }),
       credentials: "include",
     })
-      .then((res) => res.json())
+      .then((res) => console.log(res.json()))
       .then((data) => {
+        console.log(res);
         if (data.error) {
-          // console.log({ html: data.error });
+          console.log({ html: data.error });
         } else {
-          // console.log({
+          console.log(data);
         }
       })
       .catch((err) => {
@@ -190,7 +188,7 @@ const VotePage = ({ usern, lobbyid }) => {
   const [selectedValue, setSelectedValue] = React.useState();
   const nowdigonthis = (puid, opuid, question, option) => {
     setSelectedValue(option);
-    // console.log(puid, opuid, question, option);
+    console.log(puid, opuid, question, option);
     fetch(`${link}check`, {
       method: "POST",
       headers: {
@@ -201,7 +199,7 @@ const VotePage = ({ usern, lobbyid }) => {
     }).then((res) => res.json())
       .then((rat) => {
         if (!rat.myitem[0].close) {
-          // console.log("Hello", puid, opuid, question, option);
+          console.log("Hello", puid, opuid, question, option);
           selectthis(puid, opuid);
           // socker(question,option);
         }
