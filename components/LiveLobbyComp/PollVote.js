@@ -10,7 +10,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Footer from '../Footer';
 import LoadingComp from '../LoadingComp.js';
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -20,6 +19,8 @@ const PollVote = ({ id }) => {
   const lobbyuuid = id;
   const [open, setOpen] = React.useState(false);
   const [loading, setloading] = useState(true);
+  const link = process.env.NEXT_PUBLIC_URL;
+  const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT;
   const subjectpolladd = async (mail) => {
     let subject = '';
     let subexist = '';
@@ -65,7 +66,6 @@ const PollVote = ({ id }) => {
   }
   const [timedPopup, setTimedPopup] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const link = process.env.NEXT_PUBLIC_URL;
   const suserd = async () => {
     try {
       const res = await fetch(`${link}suserdata`, {

@@ -42,25 +42,13 @@ const PollDataDetail = ({ pollDet, sr }) => {
     },
   };
   const [data, setdata] = useState([]);
-  const usinnname = async () => {
-    await fetch(`${link}mailName`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ data: pollDet.pollOption }),
-      credentials: "include",
-    }).then((res) => res.json())
-      .then((rte) => {
-        if (data != rte.Data) {
-          // console.log(rte.Data.length);
-          // console.log("rte",rte.Data);
-          setdata(rte.Data);
-        }
-      })
-  }
+  let uni_len = 0
   useEffect(() => {
-    usinnname();
+    for (let i = 0; i < pollDet.option.length; i++) {
+      if (pollDet.option[i].votes != 0) {
+        uni_len += pollDet.option[i].votes.length
+      }
+    }
     // console.log("Data",data);
   }, [pollDet])
   return (
@@ -111,13 +99,16 @@ const PollDataDetail = ({ pollDet, sr }) => {
                 <Typography variant="h3">{pollDet.pollQuestion}</Typography>
               </div>
 
-              {data.map((ops, s) => (<div style={{ width: '100%', display: 'flex', flexDirection: 'column', marginLeft: '3%' }}>
-                <Typography variant="h5" sx={{ color: '#251749' }}>{s + 1}. {ops.value}</Typography>
-                {ops.voters.map((zpx, d) => (<div style={{ marginLeft: '2%', maxHeight: '50px', overflow: 'auto', color: '#251749' }}>
-                  <Typography variant="h6">{zpx}</Typography>
-                </div>))}
-              </div>))}
-              {data.length == 0 ? <Typography variant="h6">Candidates havn't voted yet</Typography> : <></>}
+              {pollDet.option.map((ops, s) => <>
+                {ops.votes != 0 ? (
+                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', marginLeft: '3%' }}>
+                    <Typography variant="h5" sx={{ color: '#251749' }}>{s + 1}. {ops.value}</Typography>
+                    {ops.user.map((zpx, d) => (<div style={{ marginLeft: '2%', maxHeight: '50px', overflow: 'auto', color: '#251749' }}>
+                      <Typography variant="h6">{zpx}</Typography>
+                    </div>))}
+                  </div>
+                ) : (<> </>)}
+              </>)}
             </ThemeProvider>
           </div>
         </Paper>
