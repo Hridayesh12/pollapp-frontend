@@ -58,7 +58,7 @@ const Stat = ({ id }) => {
 
   }
   const excel = async () => {
-    await fetch(`${link}excel`, {
+    const res = await fetch(`${link}excel`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -67,17 +67,23 @@ const Stat = ({ id }) => {
         giorno: polldes,
         dio: lobbydes,
       }),
+    });
+    if (res.status === 200 || res.status === 201) {
+      const filename = `${lobbyuuid}/${lobbydes.lobbyName}.xlsx`;
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      // handle error
+    }
+  };
 
-    }).then((response) =>  {
-			const blob=response.data
-			const url = window.URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `Poll.xlsx`;
-			a.click();
-		  });
-
-  }
+  
+  
   return (
     <>
       <div style={{ minHeight: "100vh", backgroundColor: "#FAF8F1" }}>
