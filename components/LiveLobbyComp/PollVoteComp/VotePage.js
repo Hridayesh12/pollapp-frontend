@@ -9,6 +9,9 @@ import {
 import pollapp from '../../../assets/logo.png';
 import Image from 'next/image';
 import { AppBar, Toolbar, Button } from '@mui/material';
+import io from 'socket.io-client';
+
+let socket;
 const VotePage = ({ usern, lobbyid }) => {
   let subject = '';
   let subexist = '';
@@ -50,13 +53,15 @@ const VotePage = ({ usern, lobbyid }) => {
   const [polldes, setItems] = useState([]);
   const [lobbydes, setTritems] = useState([]);
   const [check, setBitems] = useState(Boolean);
-  //   const socker=(question,option)=>{
-  //     socket.emit('sendPoll', {lobbyuuid,question,option,usern}, (error) => {
-  //         if(error) {
-  //             alert(error);
-  //         }
-  //     })
-  // }      
+  const socker = (question, option) => {
+    const userduck = usern['name'];
+    console.log(lobbyuuid, question, option, userduck)
+    socket.emit('sendPoll', { lobbyuuid, question, option, userduck }, (error) => {
+      if (error) {
+        alert(error);
+      }
+    })
+  }
 
   const polls = (() => {
     lobbyuuid = lobbyid;
@@ -71,9 +76,9 @@ const VotePage = ({ usern, lobbyid }) => {
     }).then((res) => res.json())
       .then((ret) => {
         setItems(ret.myitem);
-        // socket.emit('polls',{ret,lobbyuuid},(error)=>{
-        //     if(error){alert(error);}
-        // });
+        socket.emit('polls', { ret, lobbyuuid }, (error) => {
+          if (error) { alert(error); }
+        });
       })
   });
 
@@ -118,6 +123,7 @@ const VotePage = ({ usern, lobbyid }) => {
       })
   }, [usern, lobbyid])
   useEffect(() => {
+    socket = io(ENDPOINT)
     let data = usern;
     lobbyuuid = lobbyid;
     if (usern != null || usern != undefined) {
@@ -130,32 +136,27 @@ const VotePage = ({ usern, lobbyid }) => {
         subject = 'general';
         // console.log(subject);
       }
-      // console.log(usern);
-      // console.log(data, lobbyuuid);
-      // socket.emit('join',{data,lobbyuuid},(error)=>{
-      //     if(error){alert(error);}
-      // });
+      console.log("Fff", data, lobbyuuid);
+      socket.emit('join', { data, lobbyuuid }, (error) => {
+        if (error) { alert(error); }
+      });
     }
-    // return()=>{
-    //     socket.disconnect();
-    //     socket.close();
-    // }
+    return () => {
+      socket.disconnect();
+      socket.close();
+    }
 
   }, [ENDPOINT, usern, lobbyuuid])
 
   const selectthis = (puid, opuid) => {
     if (usern) { mer = usern.mail; }
 
-    console.log(mer, puid, opuid, lobbyid, subject);
     subexist = lobbyid.includes('s');
-    console.log(subexist);
     if (subexist) {
       subject = lobbyid.slice(19);
-      console.log(subject);
     }
     else {
       subject = 'general';
-      console.log(subject);
     }
     // console.log(subject);
     fetch(`${link}select`, {
@@ -188,7 +189,6 @@ const VotePage = ({ usern, lobbyid }) => {
   const [selectedValue, setSelectedValue] = React.useState();
   const nowdigonthis = (puid, opuid, question, option) => {
     setSelectedValue(option);
-    console.log(puid, opuid, question, option);
     fetch(`${link}check`, {
       method: "POST",
       headers: {
@@ -199,9 +199,8 @@ const VotePage = ({ usern, lobbyid }) => {
     }).then((res) => res.json())
       .then((rat) => {
         if (!rat.myitem[0].close) {
-          console.log("Hello", puid, opuid, question, option);
           selectthis(puid, opuid);
-          // socker(question,option);
+          socker(question, option);
         }
         else {
           window.alert("POLL HAS BEEN CLOSED");

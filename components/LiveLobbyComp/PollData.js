@@ -5,7 +5,7 @@ import PollDataDetail from "./PollVoteComp/PollDataDetail";
 import { Grid, Card } from '@mui/material';
 const PollData = ({ poll, sr, sums }) => {
   const [sum, setSum] = React.useState([]);
-  console.log(poll, sr, sums);
+  console.log(poll)
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
@@ -73,77 +73,77 @@ const PollData = ({ poll, sr, sums }) => {
             borderBottom: "4px solid #C58940",
           }}
         >
-          <Typography variant="h3">{poll.pollQuestion}</Typography>
+          <Typography variant="h3">{poll.question}</Typography>
         </div>
         <div>
-          {poll.pollOption.map((oop, y) => (
+          {poll.option.map((oop, y) => (
             <>
-              {oop.optionValue == "" && <></>}
-              {!oop.optionValue == "" && (
+              {oop.value == "" && <></>}
+              {!oop.value == "" && (
                 <>
-                  {oop.optionCorrect == "" && (
-                    <>
+                  {/* {oop.optionCorrect == "" && ( */}
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "space-between",
+                        color: "#251749",
+                        height: "50px",
+                        position: "relative",
+                        border: "3px solid #251749",
+                        width: "97%",
+                        padding: '0px 5px'
+                      }}
+                    >
                       <div
                         style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          justifyContent: "space-between",
-                          color: "#251749",
-                          height: "50px",
-                          position: "relative",
-                          border: "3px solid #251749",
-                          width: "97%",
-                          padding: '0px 5px'
+                          overflow: "auto",
+                          width: "70%",
+                          height: "38px",
                         }}
                       >
-                        <div
-                          style={{
-                            overflow: "auto",
-                            width: "70%",
-                            height: "38px",
-                          }}
-                        >
-                          <Typography variant="h5">
-                            {y + 1}. {oop.optionValue}
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography variant="h5" align="right">
-                            {oop.optionArray.length}&nbsp;
-                            {oop.optionArray.length == 1 ? <>vote</> : <>votes</>}
-                          </Typography>
-                        </div>
-                        <div
-                          style={{
-                            width: `calc(${oop.optionArray.length}*100%/${sums})`,
-                            left: "1%",
-                            position: "absolute",
-                            zIndex: "1",
-                            minWidth: "2%",
-                            maxWidth: "98%",
-                            borderRadius: "15px",
-                            transition: "500ms ease-in-out",
-                            height: "10px",
-                            top: "30px",
-                            backgroundColor: "#251749",
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            width: "98%",
-                            left: "1%",
-                            position: "absolute",
-                            borderRadius: "15px",
-                            transition: "500ms ease-in-out",
-                            height: "10px",
-                            top: "30px",
-                            backgroundColor: "#ccc",
-                          }}
-                        ></div>
+                        <Typography variant="h5">
+                          {y + 1}. {oop.value}
+                        </Typography>
                       </div>
-                    </>
-                  )}
-                  {!oop.optionCorrect == "" && (
+                      <div>
+                        <Typography variant="h5" align="right">
+                          {oop.user.length}&nbsp;
+                          {oop.user.length == 1 ? <>vote</> : <>votes</>}
+                        </Typography>
+                      </div>
+                      <div
+                        style={{
+                          width: `calc(${oop.user.length}*100%/${sums})`,
+                          left: "1%",
+                          position: "absolute",
+                          zIndex: "1",
+                          minWidth: "2%",
+                          maxWidth: "98%",
+                          borderRadius: "15px",
+                          transition: "500ms ease-in-out",
+                          height: "10px",
+                          top: "30px",
+                          backgroundColor: "#251749",
+                        }}
+                      ></div>
+                      <div
+                        style={{
+                          width: "98%",
+                          left: "1%",
+                          position: "absolute",
+                          borderRadius: "15px",
+                          transition: "500ms ease-in-out",
+                          height: "10px",
+                          top: "30px",
+                          backgroundColor: "#ccc",
+                        }}
+                      ></div>
+                    </div>
+                  </>
+                  {/* )} */}
+                  {/* {!oop.optionCorrect == "" && (
                     <>
                       <div
                         style={{
@@ -166,18 +166,18 @@ const PollData = ({ poll, sr, sums }) => {
                           }}
                         >
                           <Typography variant="h5">
-                            {y + 1}. {oop.optionValue}
+                            {y + 1}. {oop.value}
                           </Typography>
                         </div>
                         <div>
                           <Typography variant="h5" align="right">
-                            {oop.optionArray.length}&nbsp;
-                            {oop.optionArray.length == 1 ? <>vote</> : <>votes</>}
+                            {oop.user.length}&nbsp;
+                            {oop.user.length == 1 ? <>vote</> : <>votes</>}
                           </Typography>
                         </div>
                         <div
                           style={{
-                            width: `calc(${oop.optionArray.length}*100%/${sums})`,
+                            width: `calc(${oop.user.length}*100%/${sums})`,
                             left: "1%",
                             position: "absolute",
                             zIndex: "1",
@@ -204,7 +204,7 @@ const PollData = ({ poll, sr, sums }) => {
                         ></div>
                       </div>
                     </>
-                  )}
+                  )} */}
                 </>
               )}
               <br />

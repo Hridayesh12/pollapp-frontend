@@ -11,7 +11,7 @@ import swal from "sweetalert";
 import io from 'socket.io-client';
 let socket
 const CreatedLobby = ({ lobbies, x, lobId }) => {
-  const ENDPOINT = process.env.NEXT_PUBLIC_URL;
+  const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT;
   const link = process.env.NEXT_PUBLIC_URL;
   const theme = createTheme();
   theme.typography = {
@@ -57,7 +57,7 @@ const CreatedLobby = ({ lobbies, x, lobId }) => {
   }
   const DeletePoll = async () => {
     Swal.fire({
-      title: 'Are You Sure You Want To Delte The Poll ?',
+      title: 'Are You Sure You Want To Delete The Poll ?',
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: "Yes",

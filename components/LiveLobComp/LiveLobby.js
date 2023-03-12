@@ -41,13 +41,18 @@ let socket;
 const LiveLobby = ({ id }) => {
   const router = useRouter();
   const linking = process.env.NEXT_PUBLIC_LINK;
+  const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT;
+  const link = process.env.NEXT_PUBLIC_URL;
   const sharurl = linking + 'pollvote/' + id;
   const [polldes, setItems] = useState([]);
   const [lobbydes, setTritems] = useState([]);
   const [sum, setSum] = useState([]);
   const close = true;
+  const [users, setUsers] = useState([]);
+  const [polls, setPolls] = useState([]);
   const data = { name: 'teacher' };
   const lobbyuuid = id;
+  let titles = '';
   const theme = createTheme();
   theme.typography = {
     fontFamily: ['"Roboto"', "sans-serif"].join(","),
@@ -79,41 +84,40 @@ const LiveLobby = ({ id }) => {
       fontSize: '1.2rem',
     },
   };
-  const ENDPOINT = process.env.NEXT_PUBLIC_URL;
-  const link = process.env.NEXT_PUBLIC_URL;
 
-  //   useEffect(()=>{
-  //     socket = io(ENDPOINT)
-  //     socket.emit('join',{data,lobbyuuid},(error)=>{
-  //         if(error){alert(error);}
-  //     });    
-  //     return()=>{
-  //         socket.disconnect();
-  //         socket.close();
-  //     }
-
-  // },[ENDPOINT, lobbyuuid])
 
   useEffect(() => {
-    // socket.on("LobbyData", ({ users }) => {
-    //   setUsers(users);
+    socket = io(ENDPOINT)
+    socket.emit('join', { data, lobbyuuid }, (error) => {
+      if (error) { alert(error); }
+    });
+    return () => {
+      socket.disconnect();
+      socket.close();
+    }
 
-    // });
-    // socket.on("PollData", ({ poll }) => {
-    //     // // console.log("Ok",poll);
-    //     setPolls(poll);
-    //     let vederichi=[] 
-    //     for(var r=0;r<poll.length;r++){
-    //         let arri=0
-    //         for(var s=0;s<poll[r].option.length;s++){
-    //            if(poll[r].option[s].value!==""){
-    //             arri+=poll[r].option[s].votes;
-    //             }
-    //         }
-    //         vederichi.push(arri);
-    //     }
-    // // console.log("arri",vederichi);
-    // });
+  }, [ENDPOINT, lobbyuuid])
+
+  useEffect(() => {
+    socket.on("LobbyData", ({ users }) => {
+      console.log("Is something", users);
+      setUsers(users);
+
+    });
+    socket.on("PollData", ({ poll }) => {
+      // // // console.log("Ok",poll);
+      setPolls(poll);
+      let vederichi = []
+      for (var r = 0; r < poll.length; r++) {
+        let arri = 0
+        for (var s = 0; s < poll[r].option.length; s++) {
+          if (poll[r].option[s].value !== "") {
+            arri += poll[r].option[s].votes;
+          }
+        }
+        vederichi.push(arri);
+      }
+    });
     let veddd = []
     for (var z = 0; z < polldes.length; z++) {
       let arrir = 0;
@@ -139,16 +143,17 @@ const LiveLobby = ({ id }) => {
       credentials: "include",
     }).then((res) => res.json())
       .then((ret) => {
-        // socket.emit('polls',{ret,lobbyuuid},(error)=>{
-        //   if(error){alert(error);}
-        // });
+        socket.emit('polls', { ret, lobbyuuid }, (error) => {
+          if (error) { alert(error); }
+        });
+        // // console.log(ret.myitem);
         setItems(ret.myitem);
 
       })
   }, [lobbydes]);
   const ClosingLobby = async () => {
     const stuid = id;
-    // console.log(stuid);
+    // // console.log(stuid);
     const res = await fetch(`${link}close`, {
       method: "put",
       headers: {
@@ -162,9 +167,9 @@ const LiveLobby = ({ id }) => {
     });
     if (res.status === 200) {
       swal("Success", "Lobby Closed", "success");
-      // socket.emit('closepoll',{lobbyuuid:stuid},(error)=>{
-      //   if(error){alert(error);}
-      // });
+      socket.emit('closepoll', { lobbyuuid: stuid }, (error) => {
+        if (error) { alert(error); }
+      });
     }
     else {
       swal("Error", "Failed TO Close", "error");
@@ -197,6 +202,7 @@ const LiveLobby = ({ id }) => {
     }).then((res) => res.json())
       .then((rte) => {
         setTritems(rte.myitem[0]);
+        titles = rte.myitem[0].lobbyName;
 
       })
   }, [polldes]);
@@ -207,7 +213,8 @@ const LiveLobby = ({ id }) => {
   const handleClose = () => {
     setdopen(false);
   };
-  const titles = lobbydes.lobbyName;
+
+
   return (
     <>
       <div style={{ minHeight: '100vh', backgroundColor: "#FAF8F1" }}>
@@ -230,17 +237,19 @@ const LiveLobby = ({ id }) => {
             Share
           </Button>
         </div>
-        <div style={{ display: 'flex', paddingLeft: '1%', paddingRight: '1%', marginBottom: '2%', width: '100%', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: '1%' }}>
-          <ThemeProvider theme={theme}>
-            <Typography variant="h2" style={{ borderBottom: '5px solid #C58940', color: '#62B6B7' }}>{lobbydes.lobbyName}</Typography>
-          </ThemeProvider>
-          <Button onClick={closelob} variant="contained"
-            color="error">Stop Responses</Button>
-        </div>
+        {lobbydes == undefined ? <></> :
+          <div style={{ display: 'flex', paddingLeft: '1%', paddingRight: '1%', marginBottom: '2%', width: '100%', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: '1%' }}>
+            <ThemeProvider theme={theme}>
+              <Typography variant="h2" style={{ borderBottom: '5px solid #C58940', color: '#62B6B7' }}>{lobbydes.lobbyName}</Typography>
+            </ThemeProvider>
+            <Button onClick={closelob} variant="contained"
+              color="error">Stop Responses</Button>
+          </div>
+        }
         <Grid container  >
-          {polldes == undefined ? <></> :
+          {polls == undefined ? <></> :
             <>
-              {polldes.map((lob, x) => (
+              {polls.map((lob, x) => (
                 <Grid spacing={5} xs={12} sm={12} md={6} key={x}>
                   <PollData poll={lob} sr={x} sums={sum[x]} />
                 </Grid>
